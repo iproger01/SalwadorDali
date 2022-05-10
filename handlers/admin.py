@@ -2,9 +2,10 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types, Dispatcher
 from  aiogram.dispatcher.filters import Text
-from create_bot import bot
+from create_bot import bot, dp
 from database import sqlite_db
 from keyboards import admin_keyboard
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 ID = None
 
 class FSMAdmin(StatesGroup): #класс машыны состояний
@@ -75,6 +76,20 @@ async def cancel_handler(message:types.Message, state:FSMContext):
         await state.finish()
         await message.reply('Ok')
 
+@dp.callback_query_handler(lambda x: x.data and x.data.startswith('del '))
+async def del_callback_run(callback_query:types.CallbackQuery):
+    await sqlite_db.sql_delete_command(callback_query.data.replace('del ', ''))
+    await callback_query.answer(text=f'{callback_query.data.replace("del ", "")} удалена.',show_alert=True)
+
+@dp.message_handler(commands="Удалить")
+async def delete_item(message:types.Message):
+    if message.from_user.id == ID:
+        read = await sqlite_db.sql_read2()
+        for ret in read:
+            await bot.send_photo(message.from_user.id, ret[0],f'{ret[1]}\nОписание: {ret[2]}\nЦена: {ret[-1]}')
+            await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup().add(InlineKeyboardButton(f'Удалить {ret[1]}',callback_data=f'del {ret[1]}')))
+
+
 
 def register_handlers_admin(dp : Dispatcher):
     dp.register_message_handler(cm_start, commands='Загрузить', state=None)
@@ -85,3 +100,5 @@ def register_handlers_admin(dp : Dispatcher):
     dp.register_message_handler(cancel_handler, state="*",commands='отмена')
     dp.register_message_handler(cancel_handler, Text(equals = 'отмена', ignore_case=True), state="*")
     dp.register_message_handler(admin_inter_command, commands=['moderator'], is_chat_admin=True)
+    # dp.register_message_handler(del_callback_run, lambda x: x.data and x.data.startwith('del '))
+    # dp.register_message_handler(delete_item, commands='Удалить')
