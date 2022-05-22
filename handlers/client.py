@@ -16,7 +16,7 @@ async def commands_start(message : types.Message):
 
 # @dp.message_handler(commands=['contact'])
 async def command_contact(message : types.Message):
-    await bot.send_message(message.from_user.id, "Звоните 88004430000")
+    await bot.send_message(message.from_user.id, "Звоните 89526068971")
 
 # @dp.message_handler(commands=['address'])
 async def command_address(message : types.Message):
@@ -25,10 +25,23 @@ async def command_address(message : types.Message):
 async def client_menu_comand(message: types.Message):
     await sqlite_db.sql_read(message)
 
+# async def order_paining(message: types.Message):
+#     await
+#
+# async def buy_certificates(message: types.Message):
+#     await
+#
+# async def buy_souvenir(message: types.Message):
+#     await
+#
+# async def write_to_painter(message: types.Message):
+#     await
+
+
 def register_handlers_client(dp : Dispatcher):
     dp.register_message_handler(commands_start, commands=['start','help'])
-    dp.register_message_handler(command_contact,commands=['Контакты'])
-    dp.register_message_handler(command_address, commands=['Расположение'])
-    dp.register_message_handler(client_menu_comand, commands=['Меню'])
+    dp.register_message_handler(command_contact,commands=['Контакты-Соцсети'])
+    dp.register_message_handler(command_address, commands=['Адрес'])
+    dp.register_message_handler(client_menu_comand, commands=['Картины'])
 
 

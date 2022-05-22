@@ -14,7 +14,7 @@ b2 = KeyboardButton('/Заказ портрета')
 b3 = KeyboardButton('/Сертификаты')
 b4 = KeyboardButton('/Сувениры')
 b5 = KeyboardButton('/Адрес')
-b6 = KeyboardButton('/Контакты и Соцсети')
+b6 = KeyboardButton('/Контакты-Соцсети')
 b7 = KeyboardButton('/Написать художнику в лс ТГ')
 
 kb_client_main = ReplyKeyboardMarkup(resize_keyboard=True)
