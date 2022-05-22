@@ -1,1 +1,1 @@
-from keyboards.client_keyboard import kb_client
+from keyboards.client_keyboard import kb_client_main

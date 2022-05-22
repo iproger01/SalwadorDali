@@ -1,6 +1,7 @@
 import sqlite3 as sq
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from create_bot import bot, dp
+from keyboards.markups import inBuyMenu
 
 def sql_start():
     global base, cur
@@ -18,7 +19,7 @@ async def sql_add_comand(state):
 
 async def sql_read(message):
     for ret in cur.execute('SELECT * FROM menu').fetchall(): #fetchall выгружает данные в список
-        await bot.send_photo(message.from_user.id, ret[0], f'{ret[1]}\nОписание: {ret[2]}\nЦена:{ret[-1]}')
+        await bot.send_photo(message.from_user.id, ret[0], f'{ret[1]}\nОписание: {ret[2]}\nЦена:{ret[-1]}',reply_markup=inBuyMenu)
 
 async def sql_read2():
     return cur.execute('SELECT * FROM menu').fetchall()
