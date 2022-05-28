@@ -10,13 +10,13 @@ import keyboards.markups as inline
 
 
 # @dp.message_handler(commands=['start','help'])
-async def commands_start(message : types.Message):
+async def commands_start(message : types.Message, ):
     try:
         await bot.send_message(message.from_user.id, "Привет, я покажу картины Натали Устименко. Помогу приобрести абонемент на занятия или сувенир и помогу его отправить Вам. А также свяжу с художником, чобы Вы лично могли обговорить все нюансы заказа портрета или покупки. Воспользуйтесь меню.", reply_markup=kb_client_main)
         await message.delete()
     except:
         await message.reply("Общение с ботом через ЛС, напишите ему:\n @SalwadorDalibot ")
-
+#список картин и кнопка Купить (перенаправляет на сообщение автору)
 #Меню и возврат меню
 async def bot_menu_message(message:types.Message):
     if message.text == 'Картины':
@@ -34,11 +34,14 @@ async def bot_menu_message(message:types.Message):
     elif message.text == 'Написать художнику в лс ТГ':
         await bot.send_message(message.from_user.id, 'Выберете раздел в меню', reply_markup=nav.kb_client_pic)
 #Меню Картины
+    elif message.text == 'Главное меню':
+        await bot.send_message(message.from_user.id, 'Выберете раздел в меню', reply_markup=nav.kb_client_main)
+    elif message.text == 'Серия работ ЭСТЕТИКА':
+        await client_menu_comand(message)
 
 
-
-    else:
-        await message.reply('Неизвестная команда')
+    # else:
+    #     await message.reply('Неизвестная команда')
 
 
 

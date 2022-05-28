@@ -24,11 +24,11 @@ kb_client_main = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_client_main.row(b1,b2).row(b3,b4).row(b5,b6).add(b7)
 
 #Picture MENU
-bPic1 = KeyboardButton('/Серия работ ЭСТЕТИКА')
-bPic2 = KeyboardButton('/Серия работ TECH')
-bPic3 = KeyboardButton('/Портреты артистов')
-bPic4 = KeyboardButton('/Отдельные работы')
-bPic5 = KeyboardButton('/Аэрография и роспись стен')
+bPic1 = KeyboardButton('Серия работ ЭСТЕТИКА')
+bPic2 = KeyboardButton('Серия работ TECH')
+bPic3 = KeyboardButton('Портреты артистов')
+bPic4 = KeyboardButton('Отдельные работы')
+bPic5 = KeyboardButton('Аэрография и роспись стен')
 
 kb_client_pic = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_client_pic.add(bPic1).add(bPic2).add(bPic3).add(bPic4).add(bPic5).add(btnMain)
