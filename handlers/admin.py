@@ -8,14 +8,16 @@ from keyboards import admin_keyboard
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 ID = None
 
-class FSMAdmin(StatesGroup): #класс машыны состояний
+class FSMAdmin(StatesGroup): #класс машины состояний
     photo = State()
     name = State()
     description = State()
     price = State()
+    category = State()
+
 
 #Получаем ИД текущего модератора
-# @dp.message_handler(commands=['moderator'], is_chat_admin=True)
+@dp.message_handler(commands=['moderator'], is_chat_admin=True)
 async def admin_inter_command(message: types.Message):
     global ID
     ID = message.from_user.id
@@ -23,7 +25,7 @@ async def admin_inter_command(message: types.Message):
     await message.delete()
 
 #Начало диалога загрузки нового пункта меню
-# @dp.message_handler(commands='Загрузить', state=None)
+@dp.message_handler(commands='Загрузить', state=None)
 async def cm_start(message:types.Message):
     if message.from_user.id == ID:
         await FSMAdmin.photo.set()
@@ -52,9 +54,11 @@ async def load_photo(message: types.Message, state: FSMContext):
 #ловим второй ответ и пишем в словарь
 # @dp.message_handler(state=FSMAdmin.name)
 async def load_name(message: types.Message, state: FSMContext):
+    global position
     if message.from_user.id == ID:
         async with state.proxy() as data:
             data['name'] = message.text
+            position = message.text
         await FSMAdmin.next()
         await message.reply('Теперь укажи описание')
 
@@ -67,14 +71,22 @@ async def load_description(message: types.Message, state: FSMContext):
         await FSMAdmin.next()
         await message.reply('Теперь укажи цену')
 
-#ловим чевтертый ответ и пишем в словарь
-# @dp.message_handler(state=FSMAdmin.price)
+#ловим четвертый ответ и пишем в словарь
 async def load_price(message: types.Message, state: FSMContext):
     if message.from_user.id == ID:
         async with state.proxy() as data:
             data['price'] = message.text
+
+        await FSMAdmin.next()
+        await message.reply('Теперь категорию (номер категории согласно списка):\n1-Серия работ Эстетика\n2-Серия работ Tech\n3-Серия работ Артисты\n4-Другие работы\n5-Работы Аэрография и стены\n6-Глиняные изделия\n7-Минихолсты')
+#ловим пятый ответ и пишем в словарь - это категория техническое поле которое необходимо для того чтобы различать позиции по сериям ---лучше было завести по таблице для каждой категории
+# @dp.message_handler(state=FSMAdmin.price)
+async def load_category(message: types.Message, state: FSMContext):
+    if message.from_user.id == ID:
+        async with state.proxy() as data:
+            data['category'] = message.text
         await sqlite_db.sql_add_comand(state)
-        await message.text("Позиция добавлена")
+        await message.reply(f'Позиция {position} добавлена')
         await state.finish()
 
 
@@ -95,13 +107,14 @@ async def delete_item(message:types.Message):
 
 
 def register_handlers_admin(dp : Dispatcher):
-    dp.register_message_handler(cm_start, commands='Загрузить', state=None)
-    dp.register_message_handler(cancel_handler, Text(equals = 'отмена', ignore_case=True), state="*")
-    dp.register_message_handler(admin_inter_command, commands=['moderator'], is_chat_admin=True)
+    # dp.register_message_handler(cm_start, commands='Загрузить', state=None)
+    # dp.register_message_handler(cancel_handler, Text(equals = 'отмена', ignore_case=True), state="*")
+    # dp.register_message_handler(admin_inter_command, commands='moderator', is_chat_admin=True)
     dp.register_message_handler(load_photo, content_types=['photo'],state=FSMAdmin.photo)
     dp.register_message_handler(load_name, state=FSMAdmin.name)
     dp.register_message_handler(load_description, state=FSMAdmin.description)
     dp.register_message_handler(load_price, state=FSMAdmin.price)
+    dp.register_message_handler(load_category, state=FSMAdmin.category)
     dp.register_message_handler(cancel_handler, state="*",commands='отмена')
 
     # dp.register_message_handler(del_callback_run, lambda x: x.data and x.data.startwith('del '))

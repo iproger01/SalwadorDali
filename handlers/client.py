@@ -32,12 +32,21 @@ async def bot_menu_message(message:types.Message):
     elif message.text == 'Контакты и соцсети':
         await bot.send_message(message.from_user.id, "Звоните 89526068971")
     elif message.text == 'Написать художнику в лс ТГ':
-        await bot.send_message(message.from_user.id, 'Выберете раздел в меню', reply_markup=nav.kb_client_pic)
+        await bot.send_message(message.from_user.id, 'Нажмите кнопку ниже и самостоятельно свяжитесь с художником, Натали обязательно Вам ответит ', reply_markup=inline.inChatPainter)
 #Меню Картины
     elif message.text == 'Главное меню':
         await bot.send_message(message.from_user.id, 'Выберете раздел в меню', reply_markup=nav.kb_client_main)
     elif message.text == 'Серия работ ЭСТЕТИКА':
         await client_menu_comand(message)
+    elif message.text == 'Серия работ TECH':
+        await client_menu_tech(message)
+    elif message.text == 'Портреты артистов':
+        await client_menu_artists(message)
+    elif message.text == 'Отдельные работы':
+        await client_menu_other(message)
+    elif message.text == 'Аэрография и роспись стен':
+        await client_menu_aero(message)
+
 
 
     # else:
@@ -53,9 +62,22 @@ async def command_contact(message : types.Message):
 async def command_address(message : types.Message):
     await bot.send_message(message.from_user.id, "Ростов-на-Дону, Тургеневская 5")
 
-#список картин и кнопка Купить (перенаправляет на сообщение автору)
+#Вызов списков картин и кнопка Купить (перенаправляет на сообщение автору)
 async def client_menu_comand(message: types.Message):
-    await sqlite_db.sql_read(message)
+    await sqlite_db.sql_read_est(message)
+async def client_menu_tech(message: types.Message):
+    await sqlite_db.sql_read_tech(message)
+async def client_menu_artists(message: types.Message):
+    await sqlite_db.sql_read_artists(message)
+async def client_menu_other(message: types.Message):
+    await sqlite_db.sql_read_other(message)
+async def client_menu_aero(message: types.Message):
+    await sqlite_db.sql_read_aero(message)
+# async def client_menu_glina(message: types.Message):
+#     await sqlite_db.sql_read_glina(message)
+# async def client_menu_mini(message: types.Message):
+#     await sqlite_db.sql_read_mini(message)
+
 
 @dp.callback_query_handler(text="send_main_menu")
 async def send_main_menu(message : types.Message):
@@ -85,7 +107,7 @@ def register_handlers_client(dp : Dispatcher):
     dp.register_message_handler(commands_start, commands=['start','help'])
     dp.register_message_handler(command_contact,commands=['Контакты-Соцсети'])
     dp.register_message_handler(command_address, commands=['Адрес'])
-    dp.register_message_handler(client_menu_comand, commands=['Картины'])
+    # dp.register_message_handler(client_menu_comand, commands=['Картины'])
     dp.register_message_handler(bot_menu_message)
     dp.register_message_handler(send_main_menu)
 
