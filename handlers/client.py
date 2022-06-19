@@ -24,7 +24,7 @@ async def bot_menu_message(message:types.Message):
     elif message.text == 'Заказ портрета':
         await bot.send_message(message.from_user.id, 'Нажмите кнопку ниже и напишите:\n1.Размер желаемой работы (в сантиметрах)\n2.Количество лиц на портрете\n3.К какой дате нужна готовая работа  ', reply_markup=inline.inBookPortrait)
     elif message.text == 'Сертификаты':
-        await bot.send_message(message.from_user.id, 'Выберете раздел в меню', reply_markup=nav.kb_client_pic)
+        await bot.send_message(message.from_user.id, 'Выберете раздел в меню', reply_markup=nav.kb_cert_all)
     elif message.text == 'Сувениры':
         await bot.send_message(message.from_user.id, 'Выберете раздел в меню', reply_markup=nav.kb_client_pic)
     elif message.text == 'Адрес':
@@ -46,8 +46,15 @@ async def bot_menu_message(message:types.Message):
         await client_menu_other(message)
     elif message.text == 'Аэрография и роспись стен':
         await client_menu_aero(message)
-
-
+#Меню сертификаты
+    elif message.text == 'Подарочный сертификат на арт-свидание':
+        await bot.send_photo(message.from_user.id, '/home/user/PycharmProjects/SalwadorDali/service/abonement.jpg', )
+    elif message.text == 'Абонемент на занятия':
+        await client_menu_tech(message)
+    elif message.text == 'Подарочный сертификат на услуги художника':
+        await client_menu_artists(message)
+    elif message.text == 'Сертификат на пробное занятие':
+        await client_menu_other(message)
 
     # else:
     #     await message.reply('Неизвестная команда')

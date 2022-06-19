@@ -38,3 +38,16 @@ bPortrait1 = KeyboardButton('Договориться о заказе портр
 
 kb_portrait_pic = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_portrait_pic.add(bPortrait1).add(btnMain)
+
+#Certificats
+bCert1 = KeyboardButton('Подарочный сертификат на арт-свидание')
+bCert2 = KeyboardButton('Абонемент на занятия')
+bCert3 = KeyboardButton('Подарочный сертификат на услуги художника')
+bCert4 = KeyboardButton('Сертификат на пробное занятие')
+
+
+kb_cert_all = ReplyKeyboardMarkup(resize_keyboard=True)
+kb_cert_all.add(bCert1).add(bCert2).add(bCert3).add(bCert4).add(btnMain)
+
+
+
