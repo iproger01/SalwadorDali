@@ -54,3 +54,4 @@ def generate_abonement(buyer):
 
 if __name__ == "__main__":
     generate_abonement('Natali Ustimenko')
+
