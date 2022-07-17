@@ -20,7 +20,7 @@ slide_layout = root.slide_layouts[0]
 7 ->  Content with caption
 8 ->  Pic with caption
 """
-def async generate_abonement(buyer):
+def generate_abonement(buyer):
     slide = root.slides.add_slide(slide_layout)
     left = top = 0
     pic = slide.shapes.add_picture('abonement.jpg', left, top, width=root.slide_width, height = root.slide_height)
@@ -29,8 +29,7 @@ def async generate_abonement(buyer):
     title_name=slide.shapes.title
     title_name.top = Cm(7.8)
     title_name.left = Cm(2)
-    title_name.text = "Natali Ustimenko"
-    buyer = title_name.text
+    title_name.text = buyer
 
     dt_now = str(date.today())
     dt_parse=parse(dt_now).strftime('%d.%m.%Y')
@@ -51,4 +50,7 @@ def async generate_abonement(buyer):
     # date_of_buy.font.size = Pt(14)
 
     slide.shapes._spTree.insert(2, pic._element)
-    await root.save(f'{buyer}.pptx')
+    root.save(f"{buyer}.pptx")
+
+if __name__ == "__main__":
+    generate_abonement('Natali Ustimenko')
